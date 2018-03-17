@@ -1,0 +1,14 @@
+{
+  "name": "serverless-sns-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Camilo <qnelo@hotmail.com>",
+  "license": "WTFPL",
+  "devDependencies": {
+    "serverless-offline": "^3.18.0",
+    "serverless-offline-sns": "^0.35.0"
+  },
+  "plugins": [
+    "serverless-plugin-sns"
+  ]
+}
