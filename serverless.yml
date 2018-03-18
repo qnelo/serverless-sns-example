@@ -3,16 +3,28 @@ service: serverless-sns-example
 provider:
   name: aws
   runtime: nodejs6.10
+  iamRoleStatements:
+    - Effect: "Allow"
+      Resource: "*"
+      Action:
+        - "sns:*"
 
 functions:
-  message:
-    handler: handler.message
+  getMessage:
+    handler: handler.getMessage
     events:
       - sns: sns-example-topic
+  sendMessage:
+    handler: handler.sendMessage
+    events:
+      - http:
+          path: sendMessage
+          method: get
 
 plugins:
   - serverless-offline
   - serverless-offline-sns
+  - serverless-plugin-optimize
 
 custom:
   serverless-offline-sns:
