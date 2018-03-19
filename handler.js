@@ -1,5 +1,18 @@
 'use strict';
 
+// config.js file must be like this
+// module.exports = (offline) => {
+//   return offline
+//   ? {
+//       awsAccountId: '123456789012',
+//       region: 'us-east-1'
+//   }
+//   :{
+//       awsAccountId: '098765432109', <- Real awsAccountId
+//       region: 'us-east-1'
+//   };
+// }
+
 const sendMessage = (event, context, callback) => {
 
   const AWS = require('aws-sdk');
@@ -12,12 +25,10 @@ const sendMessage = (event, context, callback) => {
     }
     : {};
 
-  const message = {
-    body: JSON.stringify({ message: 'Ultra Test Message' })
-  };
+  const message = { message: 'Ultra Test Message' };
 
   const snsPublishConfig = {
-    Message: message,
+    Message: JSON.stringify({ default: JSON.stringify(message) }),
     MessageStructure: 'json',
     TopicArn: `arn:aws:sns:${config.region}:${config.awsAccountId}:sns-example-topic`,
   };
@@ -38,20 +49,6 @@ const sendMessage = (event, context, callback) => {
       console.error('ERROR: ', err);
     }
   );
-  // sns.publish({
-  //   Message: 'Ultra Test Message',
-  //   MessageStructure: 'json',
-  //   TopicArn: 'arn:aws:sns:us-east-1:123456789012:sns-example-topic',
-  // }, () => {
-  //   const response = {
-  //     statusCode: 200,
-  //     body: JSON.stringify({
-  //       message: 'message sent'
-  //     }),
-  //   };
-
-  //   callback(null, response);
-  // });
 };
 
 const getMessage = (event, context, callback) => {
