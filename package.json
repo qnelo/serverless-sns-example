@@ -7,9 +7,11 @@
   "scripts": {
     "offline": "sls offline start",
     "logs:send": "sls logs -f sendMessage -t",
-    "logs:get": "sls logs -f getMessage -t"
+    "logs:get": "sls logs -f getMessage -t",
+    "send": "curl -i -H \"Accept: application/json\" -H \"Content-Type: application/json\" -X GET http://localhost:3000/sendMessage"
   },
   "devDependencies": {
+    "eslint": "^4.19.0",
     "serverless-offline": "^3.18.0",
     "serverless-offline-sns": "^0.35.0",
     "serverless-plugin-optimize": "^3.0.4-rc.1"
