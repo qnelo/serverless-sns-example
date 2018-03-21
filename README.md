@@ -1,22 +1,30 @@
-# Ejemplo de Serverless SNS 
+# Ejemplo de Serverless SNS
 
 Este repositorio es un ejemplo de como se realiza un proyecto con el framework serverless en NodeJS utilizando AWS SNS, permite tambien ejemplificar como probar las funciones en ambiente local.
 
 ## Creando el proyecto
 
-Crear un nuevo proyecto serverless con NodeJS
+### Crear un nuevo proyecto serverless con NodeJS
 ```bash
 serverless create --template aws-nodejs --path serverless-sns-example
 cd serverless-sns-example
 ```
 
-Iniciar git y crear package.json
+### Iniciar git y crear package.json
 ```bash
 git init
 yarn init
 ```
 
-Instalar las dependencias necesarias
+### Instalar las dependencias necesarias
+
+El paquete `aws-sdk` sirve para interactuar con todos los recursos que provee AWS.
+
+El plugin `serverless-offline` sirve para ejecutar funciones lambda en ambiente de desarrollo.
+El plugin `serverless-offline-sns` sirve para levantar un SNS localmente.
+
+El plugin `serverless-plugin-optimize` Bundle with Browserify, transpile with Babel and minify with Babili automatically to your NodeJS runtime compatible JavaScript.
+
 ```bash
 yarn add aws-sdk
 yarn add serverless-offline --dev
