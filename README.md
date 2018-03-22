@@ -1,6 +1,6 @@
 # Ejemplo de Serverless SNS
 
-Este repositorio es un ejemplo de como se realiza un proyecto con el framework serverless en NodeJS utilizando AWS SNS, permite tambien ejemplificar como probar las funciones en ambiente local.
+Este repositorio es un ejemplo de cómo se realiza un proyecto con el framework serverless en NodeJS utilizando AWS SNS, permite también ejemplificar cómo ejecutar las funciones en ambiente local.
 
 ## Creando el proyecto
 
@@ -23,7 +23,7 @@ El paquete `aws-sdk` sirve para interactuar con todos los recursos que provee AW
 El plugin `serverless-offline` sirve para ejecutar funciones lambda en ambiente de desarrollo.
 El plugin `serverless-offline-sns` sirve para levantar un SNS localmente.
 
-El plugin `serverless-plugin-optimize` Bundle with Browserify, transpile with Babel and minify with Babili automatically to your NodeJS runtime compatible JavaScript.
+El plugin `serverless-plugin-optimize` empaqueta con Browserify, transpila con Babel y minifica el proyecto NodeJS.
 
 ```bash
 yarn add aws-sdk
@@ -32,7 +32,7 @@ yarn add serverless-offline-sns --dev
 yarn add serverless-plugin-optimize --dev
 ```
 
-## Configrar el proyecto
+## Configurar el proyecto
 
 ### Configurar el archivo `serverless.yml`
 
@@ -179,10 +179,11 @@ module.exports = (offline) => {
 
 ## Probando el proyecto localmente
 
-Ejecutar el proyecto con `yarn offline` permite 
+Ejecutar el proyecto con `yarn offline` permite correr las funciones lambda en la máquina local y correr un SNS local.
+
 ```bash
 $ yarn offline
-$ sls offline start
+sls offline start
 Serverless: DEBUG[serverless-offline-sns]: starting plugin
 Serverless: DEBUG[serverless-offline-sns]: listening on 127.0.0.1:4002
 Serverless: DEBUG[serverless-offline-sns][server]: configuring route
@@ -200,11 +201,13 @@ Serverless: Offline listening on http://localhost:3000
 
 ```
 
-En otra terminal ejecutar que
+Para corroborar que el proyecto está funcionando correctamente, en otra terminal ejecutamos `yarn send`, este script enviará una petición get a la función lambda que expone un evento http y que al ser llamado envía un mensaje al tópico SNS `sns-example-topic` al que esta suscrito la función lambda `getMessage`.
+
+
 ```bash
 $ yarn send
 
-$ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:3000/sendMessage
+curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:3000/sendMessage
 HTTP/1.1 200 OK
 Content-Type: application/json
 cache-control: no-cache
@@ -214,5 +217,24 @@ Date: Tue, 20 Mar 2018 12:14:26 GMT
 Connection: keep-alive
 
 Done in 0.11s.
+
+```
+
+La lambda `getMessage` escribe en consola el mensaje recibido y puede verse en la salida de la ejecución del comando `yarn offline`.
+
+```bash
+Serverless: Offline listening on http://localhost:3000
+
+Serverless: GET /sendMessage (λ: sendMessage)
+Serverless: The first request might take a few extra seconds
+Serverless: DEBUG[serverless-offline-sns][server]: hello request
+...
+Serverless: DEBUG[serverless-offline-sns][adapter]: calling fn: serverless-sns-example-dev-getMessage 1
+Serverless: DEBUG[serverless-offline-sns]: /home/qnelo/Workspace/private/serverless-sns-example
+Serverless: DEBUG[serverless-offline-sns]: require(/home/qnelo/Workspace/private/serverless-sns-example/handler)[getMessage]
+
+incoming message:  {"default":"{\"message\":\"Ultra Test Message\"}"}
+
+Serverless: DEBUG[serverless-offline-sns][server]: [object Object]
 
 ```
