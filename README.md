@@ -238,3 +238,75 @@ incoming message:  {"default":"{\"message\":\"Ultra Test Message\"}"}
 Serverless: DEBUG[serverless-offline-sns][server]: [object Object]
 
 ```
+
+## Probando el proyecto en AWS
+
+```
+$ sls deploy
+Serverless: Optimize: starting engines
+Serverless: Optimize: serverless-sns-example-dev-getMessage
+Serverless: Optimize: serverless-sns-example-dev-sendMessage
+Serverless: Packaging service...
+Serverless: Excluding development dependencies...
+Serverless: Creating Stack...
+Serverless: Checking Stack create progress...
+.....
+Serverless: Stack create finished...
+Serverless: Uploading CloudFormation file to S3...
+Serverless: Uploading artifacts...
+Serverless: Uploading service .zip file to S3 (2.19 KB)...
+Serverless: Validating template...
+Serverless: Updating Stack...
+Serverless: Checking Stack update progress...
+.............................................
+Serverless: Stack update finished...
+Service Information
+service: serverless-sns-example
+stage: dev
+region: us-east-1
+stack: serverless-sns-example-dev
+api keys:
+  None
+endpoints:
+  GET - https://???.execute-api.us-east-1.amazonaws.com/dev/sendMessage
+functions:
+  getMessage: serverless-sns-example-dev-getMessage
+  sendMessage: serverless-sns-example-dev-sendMessage
+
+```
+
+```
+$ curl -i -H \"Accept: application/json\" -H \"Content-Type: application/json\" -X GET https://???.execute-api.us-east-1.amazonaws.com/dev/sendMessage
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 26
+Connection: keep-alive
+Date: Thu, 22 Mar 2018 12:21:34 GMT
+x-amzn-RequestId: 8fb19160-2dcb-11e8-9ba2-b348d7b3c520
+X-Amzn-Trace-Id: sampled=0;root=1-5ab39fce-2ab5ca4863e599fd7f96ef3f
+X-Cache: Miss from cloudfront
+Via: 1.1 6072d8e50a1262c0708c4232ce29bde4.cloudfront.net (CloudFront)
+X-Amz-Cf-Id: CQ9HkHBFmPJjg6AqTIu2OuOQce_NNVMDu0Q1Fw2PQ3qPS4YAMRJubQ==
+
+{"message":"message sent"}
+```
+
+```
+$ yarn logs:send
+yarn run v1.5.1
+sls logs -f sendMessage -t
+START RequestId: 2147e205-2dcb-11e8-a62a-d9b374fb6aa3 Version: $LATEST
+END RequestId: 2147e205-2dcb-11e8-a62a-d9b374fb6aa3
+REPORT RequestId: 2147e205-2dcb-11e8-a62a-d9b374fb6aa3	Duration: 700.39 ms	Billed Duration: 800 ms 	Memory Size: 1024 MB	Max Memory Used: 40 MB	
+
+```
+
+```
+$ yarn logs:get 
+yarn run v1.5.1
+sls logs -f getMessage -t
+START RequestId: 21e2c238-2dcb-11e8-9d03-0b03f48178e2 Version: $LATEST
+2018-03-22 09:18:30.841 (-03:00)	21e2c238-2dcb-11e8-9d03-0b03f48178e2	incoming message:  {"message":"Ultra Test Message"}
+END RequestId: 21e2c238-2dcb-11e8-9d03-0b03f48178e2
+REPORT RequestId: 21e2c238-2dcb-11e8-9d03-0b03f48178e2	Duration: 2.61 ms	Billed Duration: 100 ms 	Memory Size: 1024 MB	Max Memory Used: 20 MB	
+```
