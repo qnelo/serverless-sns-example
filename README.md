@@ -43,18 +43,18 @@ provider:
   name: aws
   runtime: nodejs6.10
 
-  # Generar los permisos
+  # Configuración para generar los permisos
   iamRoleStatements:
     - Effect: "Allow"
       Resource: "*"
       Action:
         - "sns:*"
 
-# definiendo las funciones
+# Definiendo las funciones
 functions:
   getMessage:
     handler: handler.getMessage
-    # creacion y suscripcion al topico
+    # Creacion y suscripcion al topico
     events:
       - sns: sns-example-topic
   sendMessage:
@@ -64,13 +64,13 @@ functions:
           path: sendMessage
           method: get
 
-# lista de plugins
+# Lista de plugins
 plugins:
   - serverless-offline
   - serverless-offline-sns
   - serverless-plugin-optimize
 
-# configuracion personalizada de sns offline
+# Configuración personalizada de sns offline
 custom:
   serverless-offline-sns:
     port: 4002
@@ -80,11 +80,14 @@ custom:
 ### Modificación del archivo `handler.js`
 
 ```js
+// Función lambda que enviará un mensaje al topico SNS
 const sendMessage = (event, context, callback) => {
 
     const AWS = require('aws-sdk');
     const config = require('./config')(process.env.IS_OFFLINE);
 
+    // Comprueba si se esta ejecutando con el plugin serverless-offline
+    // y sobre escribe la configuración del endpoint SNS
     const snsConfig = process.env.IS_OFFLINE
         ? {
             endpoint: 'http://127.0.0.1:4002',
@@ -92,6 +95,7 @@ const sendMessage = (event, context, callback) => {
         }
         : {};
 
+    // Mensaje que se enviará
     const message = { message: 'Ultra Test Message' };
 
     const snsPublishConfig = {
@@ -118,6 +122,7 @@ const sendMessage = (event, context, callback) => {
     );
 };
 
+// Función lambda que recibirá mensajes desde el topico SNS
 const getMessage = (event, context, callback) => {
     console.info('incoming message: ', event.Records[0].Sns.Message);
     callback(null, { response: 'message received' });
@@ -131,7 +136,7 @@ module.exports = {
 
 ### Creación del archivo `config.js`
 
-Este archivo contiene la configuraciones
+Este archivo contiene la configuraciones para conectar el SDK con AWS
 
 ```js
 module.exports = (offline) => {
@@ -240,6 +245,11 @@ Serverless: DEBUG[serverless-offline-sns][server]: [object Object]
 ```
 
 ## Probando el proyecto en AWS
+
+La última comprobación, pero no menos importante, es que funcione en AWS nuestras lambda y nuestro tópico SNS. Para ello se ejecuta el comando sls deploy.
+
+Más informacion sobre el comando, stages, regiones, etc, en los siguintes links: [deploying](https://serverless.com/framework/docs/providers/aws/guide/deploying/) y [cli-reference](https://serverless.com/framework/docs/providers/aws/cli-reference/deploy/)
+
 
 ```
 $ sls deploy
