@@ -246,7 +246,7 @@ Serverless: DEBUG[serverless-offline-sns][server]: [object Object]
 
 ## Probando el proyecto en AWS
 
-La última comprobación, pero no menos importante, es que funcione en AWS nuestras lambda y nuestro tópico SNS. Para ello se ejecuta el comando sls deploy.
+La última comprobación, pero no menos importante, es que funcione en AWS nuestras lambda y nuestro tópico SNS. Para ello se ejecuta el comando `sls deploy`.
 
 Más informacion sobre el comando, stages, regiones, etc, en los siguintes links: [deploying](https://serverless.com/framework/docs/providers/aws/guide/deploying/) y [cli-reference](https://serverless.com/framework/docs/providers/aws/cli-reference/deploy/)
 
@@ -285,6 +285,8 @@ functions:
 
 ```
 
+Una vez que las funciones lambda estén instaladas, se puede probar que se ejecuten correctamente. Dado que la función `sendMessage` expone un evento GET, se puede ejecutar la función ingresando la URL que el comando `sls deploy` entrega o ejecutando un comando `curl` como el siguiente:
+
 ```
 $ curl -i -H \"Accept: application/json\" -H \"Content-Type: application/json\" -X GET https://???.execute-api.us-east-1.amazonaws.com/dev/sendMessage
 HTTP/1.1 200 OK
@@ -301,6 +303,8 @@ X-Amz-Cf-Id: CQ9HkHBFmPJjg6AqTIu2OuOQce_NNVMDu0Q1Fw2PQ3qPS4YAMRJubQ==
 {"message":"message sent"}
 ```
 
+El script `yarn logs:send` definido en el archivo `package.json` permite ver los logs de ejecución de la función `sendMessage`.
+
 ```
 $ yarn logs:send
 yarn run v1.5.1
@@ -310,6 +314,8 @@ END RequestId: 2147e205-2dcb-11e8-a62a-d9b374fb6aa3
 REPORT RequestId: 2147e205-2dcb-11e8-a62a-d9b374fb6aa3	Duration: 700.39 ms	Billed Duration: 800 ms 	Memory Size: 1024 MB	Max Memory Used: 40 MB	
 
 ```
+
+El script `yarn logs:get`, también definido en el archivo `package.json` permite ver los logs de ejecución de la función `getMessage`. Si todo funciona correctamente, se podrá ver que el mensaje `message:  {"message":"Ultra Test Message"}` enviado desde la función lambda `sendMessage`.
 
 ```
 $ yarn logs:get 
