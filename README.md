@@ -1,4 +1,3 @@
-# Prueba de fork 2
 # Ejemplo de Serverless SNS
 
 Este repositorio es un ejemplo de cómo se realiza un proyecto con el framework serverless en NodeJS utilizando AWS SNS, permite también ejemplificar cómo ejecutar las funciones en ambiente local.
@@ -327,5 +326,3 @@ START RequestId: 21e2c238-2dcb-11e8-9d03-0b03f48178e2 Version: $LATEST
 END RequestId: 21e2c238-2dcb-11e8-9d03-0b03f48178e2
 REPORT RequestId: 21e2c238-2dcb-11e8-9d03-0b03f48178e2	Duration: 2.61 ms	Billed Duration: 100 ms 	Memory Size: 1024 MB	Max Memory Used: 20 MB	
 ```
-
-borrar esto
