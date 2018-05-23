@@ -1,4 +1,4 @@
-# Prueba de fork
+# Prueba de fork 2
 # Ejemplo de Serverless SNS
 
 Este repositorio es un ejemplo de cómo se realiza un proyecto con el framework serverless en NodeJS utilizando AWS SNS, permite también ejemplificar cómo ejecutar las funciones en ambiente local.
