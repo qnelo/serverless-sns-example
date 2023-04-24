@@ -20,6 +20,6 @@
     "serverless-plugin-sns"
   ],
   "dependencies": {
-    "aws-sdk": "^2.211.0"
+    "aws-sdk": "^2.1354.0"
   }
 }
